@@ -30,8 +30,8 @@
     html, body { height: 100%; }
     body{ display:flex; flex-direction:column; min-height:100vh; background:var(--bg); color:var(--fg); }
     .navbar{ background: linear-gradient(90deg, #22232e, #2b2d3a); border-bottom:1px solid var(--current); }
-    .brand-badge{ background:var(--purple); color:#0c0c12; font-weight:700; border-radius:.35rem; padding:.15rem .4rem; }
-    .pill{ border:1px dashed var(--comment); border-radius:.5rem; padding:.35rem .6rem; color:var(--comment); }
+    .brand-badge{ background:var(--purple); color:#0c0c12; font-weight:700; border-radius:.35rem; padding:.15rem .4rem; font-size:0.9rem; }
+    .pill{ border:1px dashed var(--comment); border-radius:.5rem; padding:.25rem .5rem; color:var(--comment); font-size:0.8rem; }
     .btn-drac{ background:var(--current); color:var(--fg); border-color:var(--current); }
     .btn-drac:hover{ filter:brightness(1.15); color:var(--fg); }
     .btn-ghost{ background:transparent; border:1px solid var(--current); color:var(--fg); }
@@ -40,11 +40,13 @@
     .btn-stop{ background:var(--red); color:#0b0e12; border:none; }
     .card{ background:var(--card-bg); border:1px solid var(--current); }
     .card-header{ background:#232532; border-bottom:1px solid var(--current); }
-    .task{ background:#232532; border:1px solid var(--current); border-radius:.6rem; padding:.5rem .6rem; display:flex; gap:.5rem; align-items:center; user-select:none; }
+    .task{ background:#232532; border:1px solid var(--current); border-radius:.6rem; padding:.75rem; display:flex; gap:.5rem; align-items:flex-start; user-select:none; margin-bottom:.5rem; }
     .task.dragging{ opacity:.55; transform:scale(0.98); }
     .task.done .text{ text-decoration:line-through; color:var(--comment); }
     .task .text[contenteditable="true"]{ outline:2px solid var(--purple); border-radius:.25rem; padding:.1rem .2rem; }
     .task .badge{ background:transparent; border:1px solid var(--comment); color:var(--comment); }
+    .task .text { flex: 1; word-break: break-word; line-height: 1.4; }
+    .task-actions { display: flex; gap: .25rem; align-items: center; flex-shrink: 0; }
     .list-drop{ min-height:2.2rem; gap:.5rem; display:flex; flex-direction:column; }
     .list-drop.hover{ outline:2px dashed var(--purple); border-radius:.6rem; padding:.4rem; }
     .muted{ color:var(--comment); }
@@ -52,7 +54,7 @@
     .searchbox{ background:#232532; border:1px solid var(--current); color:var(--fg); }
     .searchbox::placeholder{ color:var(--comment); }
     .switch-mini .form-check-input{ width:2.2rem; height:1.2rem; background:#1e2030; border:1px solid var(--current); }
-    .kbd{ background:#1e2030; border:1px solid var(--current); border-bottom-width:3px; padding:.1rem .35rem; border-radius:.2rem; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .kbd{ background:#1e2030; border:1px solid var(--current); border-bottom-width:3px; padding:.1rem .35rem; border-radius:.2rem; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:0.8rem; }
     .link-muted{ color:var(--comment); text-decoration:none; }
     .link-muted:hover{ color:var(--fg); }
     /* Session mode */
@@ -81,30 +83,153 @@
         .footer a:hover { text-decoration: underline; }
         .footer .label { color: var(--comment); text-transform: uppercase; letter-spacing:.05em; }
 
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .navbar { padding: .5rem 1rem; }
+      .navbar .d-flex { flex-wrap: wrap; gap: .5rem; }
+      .brand-badge { font-size: 0.8rem; padding: .1rem .3rem; }
+      .pill { font-size: 0.7rem; padding: .2rem .4rem; }
+      .btn-sm { font-size: 0.8rem; padding: .25rem .5rem; }
+      
+      .card-header .d-flex { flex-wrap: wrap; gap: .5rem; }
+      .organize-toolbar { width: 100%; }
+      .organize-toolbar .d-flex { flex-wrap: wrap; gap: .5rem; width: 100%; }
+      #search { flex: 1; min-width: 0; }
+      
+      .task { 
+        padding: .5rem; 
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: .75rem;
+      }
+      .task-content {
+        display: flex;
+        gap: .5rem;
+        align-items: flex-start;
+        width: 100%;
+      }
+      .task-actions {
+        justify-content: flex-end;
+        width: 100%;
+        border-top: 1px solid var(--current);
+        padding-top: .5rem;
+        margin-top: .25rem;
+      }
+      
+      .dropdown-menu {
+        position: fixed !important;
+        top: auto !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 90vw !important;
+        max-width: 400px !important;
+        z-index: 1050;
+      }
+      
+      .info-quickstart .row { flex-direction: column; }
+      .info-quickstart .card-body { text-align: center; }
+      .info-quickstart .text-end { text-align: center !important; margin-top: 1rem; }
+      
+      .main-content { padding: 0 .5rem; }
+      
+      .footer .d-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: .5rem;
+      }
+      
+      .kbd { font-size: 0.7rem; }
+      
+      /* Task button optimizations for mobile */
+      .btn-ghost { 
+        padding: .25rem .4rem;
+        font-size: 0.8rem;
+      }
+      
+      /* Make checkboxes and priority icons larger for touch */
+      .form-check-input {
+        transform: scale(1.2);
+        margin-right: .75rem;
+      }
+      
+      .pri {
+        transform: scale(1.3);
+        margin-right: .5rem;
+      }
+      
+      /* Better spacing for mobile cards */
+      .card {
+        margin-bottom: 1rem;
+      }
+      
+      /* Hide some less critical elements on very small screens */
+      @media (max-width: 480px) {
+        .pill { display: none; }
+        .small.muted { font-size: 0.8rem; }
+        .footer .small { font-size: 0.75rem; }
+      }
+    }
+
+    /* Touch-friendly enhancements */
+    @media (hover: none) and (pointer: coarse) {
+      .task {
+        touch-action: manipulation;
+      }
+      
+      .btn {
+        min-height: 44px;
+        min-width: 44px;
+      }
+      
+      .btn-sm {
+        min-height: 36px;
+        min-width: 36px;
+      }
+      
+      /* Larger tap targets for task interactions */
+      .task .form-check-input {
+        transform: scale(1.5);
+        margin: .5rem;
+      }
+      
+      .task .pri {
+        transform: scale(1.5);
+        margin: .5rem;
+        cursor: pointer;
+      }
+      
+      /* Disable hover effects on touch devices */
+      .task:hover,
+      .btn:hover {
+        transform: none;
+        filter: none;
+      }
+    }
   </style>
 </head>
 
 <body>
   <!-- Top bar -->
-  <nav class="navbar navbar-expand px-3 py-2">
-    <div class="d-flex align-items-center gap-2">
+  <nav class="navbar navbar-expand px-2 px-md-3 py-2">
+    <div class="d-flex align-items-center gap-2 flex-wrap">
       <span class="brand-badge">CSB</span>
-      <strong>Code Sprint Board</strong>
-      <span class="ms-2 pill small"><i class="bi bi-moon-stars me-1"></i>Dracula</span>
+      <strong class="d-none d-sm-inline">Code Sprint Board</strong>
+      <strong class="d-sm-none">Sprint Board</strong>
+      <span class="ms-2 pill small d-none d-md-inline"><i class="bi bi-moon-stars me-1"></i>Dracula</span>
     </div>
-    <div class="ms-auto d-flex align-items-center gap-2">
-      <span id="todayCount" class="badge rounded-pill" style="background:var(--purple);">0 Today</span>
-      <span id="backlogCount" class="badge rounded-pill" style="background:var(--orange); color:#0b0e12;">0 Backlog</span>
+    <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
+      <span id="todayCount" class="badge rounded-pill" style="background:var(--purple);">0</span>
+      <span id="backlogCount" class="badge rounded-pill" style="background:var(--orange); color:#0b0e12;">0</span>
 
-      <div class="vr mx-2"></div>
+      <div class="vr mx-2 d-none d-md-block"></div>
 
       <button id="toggleSessionBtn" class="btn btn-focus btn-sm">
-        <i class="bi bi-play-fill me-1"></i><span>Start Session</span>
+        <i class="bi bi-play-fill"></i><span class="d-none d-sm-inline ms-1">Start</span>
       </button>
 
       <div class="dropdown">
         <button class="btn btn-ghost btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="bi bi-box-arrow-down me-1"></i>Export/Import
+          <i class="bi bi-box-arrow-down"></i><span class="d-none d-sm-inline ms-1">Export</span>
         </button>
         <div class="dropdown-menu dropdown-menu-end p-3 text-body" style="min-width:22rem;">
           <div class="text-light">
@@ -116,13 +241,13 @@
             <div class="d-flex gap-2 flex-wrap">
               <button id="btnExport" class="btn btn-drac btn-sm"><i class="bi bi-clipboard2-data me-1"></i>Export</button>
               <button id="btnCopy" class="btn btn-ghost btn-sm"><i class="bi bi-clipboard-check me-1"></i>Copy</button>
-              <button id="btnDownload" class="btn btn-ghost btn-sm"><i class="bi bi-filetype-txt me-1"></i>Download .txt</button>
+              <button id="btnDownload" class="btn btn-ghost btn-sm"><i class="bi bi-filetype-txt me-1"></i>Download</button>
               <button id="btnImport" class="btn btn-ghost btn-sm"><i class="bi bi-cloud-arrow-up me-1"></i>Import</button>
-              <label for="fileInput" class="btn btn-ghost btn-sm file-label"><i class="bi bi-upload me-1"></i>Upload .txt</label>
+              <label for="fileInput" class="btn btn-ghost btn-sm file-label"><i class="bi bi-upload me-1"></i>Upload</label>
               <input type="file" id="fileInput" accept=".txt,text/plain" />
             </div>
             <div class="form-text text-light mt-2">
-              Tip: Import will replace current data (you'll be asked). You can also drop the .txt file anywhere in the page.
+              Tip: Import will replace current data. You can also drop the .txt file anywhere in the page.
             </div>
           </div>
         </div>
@@ -131,19 +256,19 @@
   </nav>
 
   <!-- Info / Hints -->
-  <section class="container py-3 info-quickstart">
+  <section class="container-fluid px-2 py-3 info-quickstart">
     <div class="row g-3">
       <div class="col-lg-8">
         <div class="card">
           <div class="card-body py-3">
-            <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
               <div>
                 <div class="h5 mb-0">Plan in Backlog, Focus in Session</div>
-                <div class="small muted">Type tasks with optional #tags and !! for priority. Press Enter to add. Drag to reorder. Toggle <i class="bi bi-rocket-takeoff"></i> to mark for Today.</div>
+                <div class="small muted">Type tasks with optional #tags and !! for priority. Press Enter to add. Drag to reorder.</div>
               </div>
-              <div class="text-end small">
+              <div class="text-end small d-none d-md-block">
                 <div class="mb-1"><span class="kbd">S</span> Start/Stop</div>
-                <div><span class="kbd">N</span> New Task • <span class="kbd">T</span> Toggle Today • <span class="kbd">.</span> Cycle Priority</div>
+                <div><span class="kbd">N</span> New Task • <span class="kbd">T</span> Toggle Today • <span class="kbd">.</span> Priority</div>
               </div>
             </div>
           </div>
@@ -152,11 +277,11 @@
       <div class="col-lg-4">
         <div class="card export-card">
           <div class="card-body py-3">
-            <div class="small muted mb-1">Session mode hides everything except Today. Stop the session to reorganize or import/export.</div>
+            <div class="small muted mb-1">Session mode hides everything except Today. Stop the session to reorganize.</div>
             <div class="divider my-2"></div>
             <div class="d-flex gap-2 flex-wrap">
               <span class="chip"><i class="bi bi-hash me-1"></i>Tags</span>
-              <span class="chip"><i class="bi bi-lightning me-1"></i>!! priority</span>
+              <span class="chip"><i class="bi bi-lightning me-1"></i>Priority</span>
               <span class="chip"><i class="bi bi-filter me-1"></i>Filter</span>
               <span class="chip"><i class="bi bi-arrows-move me-1"></i>Drag</span>
             </div>
@@ -167,21 +292,23 @@
   </section>
 
   <!-- Main -->
-  <main class="container pb-5">
+  <main class="container-fluid main-content pb-5">
     <div class="row g-3">
       <!-- Backlog -->
       <div class="col-lg-7 backlog-pane">
         <div class="card">
-          <div class="card-header d-flex align-items-center justify-content-between py-2">
+          <div class="card-header d-flex align-items-center justify-content-between py-2 flex-wrap gap-2">
             <div class="d-flex align-items-center gap-2">
-              <i class="bi bi-journal-code me-1" style="color:var(--orange)"></i>
+              <i class="bi bi-journal-code" style="color:var(--orange)"></i>
               <strong>Backlog</strong>
             </div>
-            <div class="d-flex align-items-center gap-2 organize-toolbar">
-              <input id="search" class="form-control form-control-sm searchbox" placeholder="Filter by text or #tag..." />
-              <div class="form-check form-switch switch-mini">
-                <input class="form-check-input" type="checkbox" id="toggleDoneBacklog">
-                <label for="toggleDoneBacklog" class="form-check-label small">Hide done</label>
+            <div class="organize-toolbar">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <input id="search" class="form-control form-control-sm searchbox" placeholder="Filter..." />
+                <div class="form-check form-switch switch-mini">
+                  <input class="form-check-input" type="checkbox" id="toggleDoneBacklog">
+                  <label for="toggleDoneBacklog" class="form-check-label small">Hide done</label>
+                </div>
               </div>
             </div>
           </div>
@@ -189,10 +316,10 @@
             <form id="addForm" class="mb-3">
               <div class="input-group">
                 <span class="input-group-text searchbox"><i class="bi bi-plus-lg"></i></span>
-                <input id="taskInput" class="form-control searchbox" placeholder="Add a task... use #tags and !! for priority" autocomplete="off">
+                <input id="taskInput" class="form-control searchbox" placeholder="Add task... #tags !!" autocomplete="off">
                 <button class="btn btn-drac" type="submit">Add</button>
               </div>
-              <div class="form-text text-light">Examples: "Refactor auth #backend !!" • "Fix CSS glitches #ui"</div>
+              <div class="form-text text-light d-none d-md-block">Examples: "Refactor auth #backend !!" • "Fix CSS glitches #ui"</div>
             </form>
 
             <div id="backlogList" class="list-drop" aria-label="Backlog list"></div>
@@ -203,7 +330,7 @@
       <!-- Today -->
       <div class="col-lg-5 today-pane">
         <div class="card">
-          <div class="card-header d-flex align-items-center justify-content-between py-2">
+          <div class="card-header d-flex align-items-center justify-content-between py-2 flex-wrap gap-2">
             <div class="d-flex align-items-center gap-2">
               <i class="bi bi-rocket-takeoff-fill" style="color:var(--green)"></i>
               <strong>Today</strong>
@@ -229,15 +356,17 @@
   <!-- Templates -->
   <template id="taskTemplate">
     <div class="task" draggable="true">
-      <input type="checkbox" class="form-check-input me-1 chk">
-      <span class="text flex-grow-1" role="textbox"></span>
-      <div class="d-flex align-items-center gap-2">
+      <div class="task-content">
+        <input type="checkbox" class="form-check-input chk">
+        <span class="text flex-grow-1" role="textbox"></span>
         <i class="bi bi-flag-fill pri pri-0" title="Priority"></i>
+      </div>
+      <div class="task-actions">
         <span class="small tags d-none"></span>
         <button class="btn btn-sm btn-ghost btn-today" title="Toggle Today">
           <i class="bi bi-rocket-takeoff"></i>
         </button>
-        <button class="btn btn-sm btn-ghost btn-edit" title="Edit">
+        <button class="btn btn-sm btn-ghost btn-edit d-none d-md-inline-flex" title="Edit">
           <i class="bi bi-pencil"></i>
         </button>
         <button class="btn btn-sm btn-ghost btn-del" title="Delete">
@@ -249,11 +378,10 @@
 
   <!-- Session footer hint -->
   <footer class="text-center py-3 small muted">
-    <a class="link-muted" href="#" id="showShortcuts"><i class="bi bi-keyboard"></i> Keyboard shortcuts</a>
+    <a class="link-muted" href="#" id="showShortcuts"><i class="bi bi-keyboard"></i> Shortcuts</a>
     <span class="mx-2">•</span>
     <span id="clock"></span>
   </footer>
-
 
 <footer class="footer mt-auto py-3">
   <div class="container small d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
@@ -267,8 +395,8 @@
       <a href="https://github.com/x0ptr" target="_blank" rel="noopener">github.com/x0ptr</a>
     </div>
 
-    <div class="text-muted">
-      Share or Save it with <kbd>Ctrl</kbd>+<kbd>S</kbd> and use local
+    <div class="text-muted d-none d-md-block">
+      Share or Save with <kbd>Ctrl</kbd>+<kbd>S</kbd>
     </div>
   </div>
 </footer>
@@ -378,18 +506,20 @@
       $('#todayList').appendChild(fragT);
 
       // Counts
-      $('#backlogCount').textContent = `${state.tasks.filter(t=>!t.today).length} Backlog`;
-      $('#todayCount').textContent = `${state.tasks.filter(t=>t.today).length} Today`;
+      const backlogCount = state.tasks.filter(t=>!t.today).length;
+      const todayCount = state.tasks.filter(t=>t.today).length;
+      $('#backlogCount').textContent = window.innerWidth < 768 ? backlogCount : `${backlogCount} Backlog`;
+      $('#todayCount').textContent = window.innerWidth < 768 ? todayCount : `${todayCount} Today`;
 
       // Session mode
       document.body.classList.toggle('session', !!state.session);
       const btn = $('#toggleSessionBtn');
       if(state.session){
         btn.classList.remove('btn-focus'); btn.classList.add('btn-stop');
-        btn.innerHTML = '<i class="bi bi-stop-circle me-1"></i><span>Stop Session</span>';
+        btn.innerHTML = '<i class="bi bi-stop-circle"></i><span class="d-none d-sm-inline ms-1">Stop</span>';
       }else{
         btn.classList.add('btn-focus'); btn.classList.remove('btn-stop');
-        btn.innerHTML = '<i class="bi bi-play-fill me-1"></i><span>Start Session</span>';
+        btn.innerHTML = '<i class="bi bi-play-fill"></i><span class="d-none d-sm-inline ms-1">Start</span>';
       }
 
       // UI toggles
@@ -460,13 +590,16 @@
       // tags (inline chips when hovering)
       if(task.tags?.length){
         const span = document.createElement('span');
-        span.className = 'd-flex align-items-center gap-1';
+        span.className = 'd-flex align-items-center gap-1 flex-wrap';
         task.tags.forEach(t=>{
-          const chip = document.createElement('span'); chip.className='badge rounded-pill';
+          const chip = document.createElement('span'); 
+          chip.className='badge rounded-pill';
           chip.textContent = '#'+t;
+          chip.style.fontSize = '0.7rem';
           span.appendChild(chip);
         });
         $('.tags', root).replaceWith(span);
+        $('.tags', root).classList.remove('d-none');
       }
 
       // drag
@@ -700,6 +833,9 @@
       $('#clock').textContent = d.toLocaleString(undefined, {weekday:'short', hour:'2-digit', minute:'2-digit'});
     }
     setInterval(tickClock, 1000); tickClock();
+
+    // Re-render on window resize to update responsive elements
+    window.addEventListener('resize', render);
 
     // ---------- Boot ----------
     load();
