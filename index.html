@@ -519,18 +519,53 @@
         });
         list.addEventListener('dragleave',()=> list.classList.remove('hover'));
         list.addEventListener('drop',(e)=>{
-          e.preventDefault(); list.classList.remove('hover');
-          const ids = $$('.task', list).map(x=>x.dataset.id);
-          if(listId==='backlogList'){ state.orderBacklog = ids; ids.forEach(id=>{
-            const t = state.tasks.find(t=>t.id===id); if(t) t.today=false;
-          }); }
-          if(listId==='todayList'){ state.orderToday = ids; ids.forEach(id=>{
-            const t = state.tasks.find(t=>t.id===id); if(t) t.today=true;
-          }); }
+          e.preventDefault(); 
+          list.classList.remove('hover');
+          
+          const draggedId = e.dataTransfer.getData('text/plain');
+          if(!draggedId) return;
+          
+          const task = state.tasks.find(t => t.id === draggedId);
+          if(!task) return;
+          
+          // Determine if we're moving to backlog or today based on the list ID
+          const isBacklogTarget = (listId === 'backlogList');
+          const isTodayTarget = (listId === 'todayList');
+          
+          // Update the task's today flag
+          if(isBacklogTarget && task.today) {
+            // Moving FROM today TO backlog - remove today flag
+            task.today = false;
+            task.updated = nowStamp();
+            // Remove from today order, add to backlog order
+            state.orderToday = state.orderToday.filter(id => id !== draggedId);
+            if(!state.orderBacklog.includes(draggedId)) {
+              state.orderBacklog.push(draggedId);
+            }
+          } else if(isTodayTarget && !task.today) {
+            // Moving FROM backlog TO today - add today flag
+            task.today = true;
+            task.updated = nowStamp();
+            // Remove from backlog order, add to today order
+            state.orderBacklog = state.orderBacklog.filter(id => id !== draggedId);
+            if(!state.orderToday.includes(draggedId)) {
+              state.orderToday.push(draggedId);
+            }
+          }
+          
+          // Update the order based on current DOM position within the target list
+          const currentIds = $$('.task', list).map(x => x.dataset.id);
+          if(isBacklogTarget) {
+            state.orderBacklog = currentIds;
+          } else if(isTodayTarget) {
+            state.orderToday = currentIds;
+          }
+          
           render();
         });
       });
     }
+    
     function getDragAfterElement(container, y){
       const els = [...container.querySelectorAll('.task:not(.dragging)')];
       return els.reduce((closest, child)=>{
@@ -605,7 +640,7 @@
     });
     $('#btnDownload').addEventListener('click', ()=>{
       const b64 = exportBase64();
-      const stamp = new Date().toISOString().replace(/[:.]/g,'').slice(0,15);
+      const stamp = new Date().toISOString().replace(/[:.]/g,'').replace(/-/g,'').slice(0,15);
       downloadTxt(`backlog-${stamp}.txt`, b64);
     });
     $('#btnImport').addEventListener('click', ()=>{
@@ -631,7 +666,15 @@
 
     // ---------- Keyboard shortcuts ----------
     document.addEventListener('keydown', (e)=>{
-      if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+      // Check if we're in a text input area OR if any contenteditable element is active
+      const activeElement = document.activeElement;
+      const isInInput = ['INPUT','TEXTAREA'].includes(activeElement.tagName) || 
+                       activeElement.contentEditable === 'true' ||
+                       activeElement.isContentEditable;
+      
+      // Skip keyboard shortcuts if we're editing text
+      if(isInInput) return;
+      
       if(e.key.toLowerCase()==='s'){ e.preventDefault(); state.session=!state.session; render(); }
       if(e.key.toLowerCase()==='n'){ e.preventDefault(); $('#taskInput').focus(); }
       if(e.key==='.' ){ // cycle priority on first selected/first task in Today
