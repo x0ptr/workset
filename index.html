@@ -8,7 +8,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    :root{
+    /* Theme Variables */
+    :root[data-theme="dracula"] {
       /* Dracula Official */
       --bg:#282a36;
       --current:#44475a;
@@ -21,42 +22,150 @@
       --purple:#bd93f9;
       --red:#ff5555;
       --yellow:#f1fa8c;
+      
+      --theme-name: "Dracula";
+      --theme-icon: "🧛";
+    }
 
+    :root[data-theme="rose-pine"] {
+      /* Rose Pine Official */
+      --bg:#191724;
+      --current:#26233a;
+      --fg:#e0def4;
+      --comment:#6e6a86;
+      --cyan:#9ccfd8;
+      --green:#31748f;
+      --orange:#f6c177;
+      --pink:#eb6f92;
+      --purple:#c4a7e7;
+      --red:#eb6f92;
+      --yellow:#f6c177;
+      
+      --theme-name: "Rose Pine";
+      --theme-icon: "🌹";
+    }
+
+    :root[data-theme="github-light"] {
+      /* GitHub Light Theme */
+      --bg:#ffffff;
+      --current:#d0d7de;
+      --fg:#1f2328;
+      --comment:#656d76;
+      --cyan:#0969da;
+      --green:#1a7f37;
+      --orange:#fb8500;
+      --pink:#bf8700;
+      --purple:#8250df;
+      --red:#d1242f;
+      --yellow:#9a6700;
+      
+      --theme-name: "GitHub Light";
+      --theme-icon: "☀️";
+    }
+
+    :root {
       --bs-body-bg: var(--bg);
       --bs-body-color: var(--fg);
       --bs-border-color: var(--current);
-      --card-bg: #2b2d3a;
+      --card-bg: color-mix(in srgb, var(--current) 15%, var(--bg) 85%);
     }
+
+    /* Light theme specific adjustments */
+    :root[data-theme="github-light"] {
+      --card-bg: #f6f8fa;
+    }
+
     html, body { height: 100%; }
     body{ display:flex; flex-direction:column; min-height:100vh; background:var(--bg); color:var(--fg); }
-    .navbar{ background: linear-gradient(90deg, #22232e, #2b2d3a); border-bottom:1px solid var(--current); }
-    .brand-badge{ background:var(--purple); color:#0c0c12; font-weight:700; border-radius:.35rem; padding:.15rem .4rem; font-size:0.9rem; }
+    .navbar{ background: linear-gradient(90deg, var(--bg), var(--card-bg)); border-bottom:1px solid var(--current); }
+    .brand-badge{ background:var(--purple); color:var(--bg); font-weight:700; border-radius:.35rem; padding:.15rem .4rem; font-size:0.9rem; }
     .pill{ border:1px dashed var(--comment); border-radius:.5rem; padding:.25rem .5rem; color:var(--comment); font-size:0.8rem; }
     .btn-drac{ background:var(--current); color:var(--fg); border-color:var(--current); }
     .btn-drac:hover{ filter:brightness(1.15); color:var(--fg); }
     .btn-ghost{ background:transparent; border:1px solid var(--current); color:var(--fg); }
-    .btn-ghost:hover{ background:var(--current); }
-    .btn-focus{ background:var(--green); color:#0b0e12; border:none; }
-    .btn-stop{ background:var(--red); color:#0b0e12; border:none; }
+    .btn-ghost:hover{ background:var(--current); color:var(--fg); }
+    .btn-focus{ background:var(--green); color:var(--bg); border:none; }
+    .btn-stop{ background:var(--red); color:var(--bg); border:none; }
     .card{ background:var(--card-bg); border:1px solid var(--current); }
-    .card-header{ background:#232532; border-bottom:1px solid var(--current); }
-    .task{ background:#232532; border:1px solid var(--current); border-radius:.6rem; padding:.75rem; display:flex; gap:.5rem; align-items:flex-start; user-select:none; margin-bottom:.5rem; }
+    .card-header{ background:color-mix(in srgb, var(--current) 30%, var(--card-bg) 70%); border-bottom:1px solid var(--current); }
+    
+    :root[data-theme="github-light"] .card-header {
+      background: #f1f3f4;
+    }
+
+    .task{ 
+      background:color-mix(in srgb, var(--current) 20%, var(--card-bg) 80%); 
+      border:1px solid var(--current); 
+      border-radius:.6rem; 
+      padding:.75rem; 
+      display:flex; 
+      justify-content:space-between;
+      align-items:center;
+      gap:1rem;
+      user-select:none; 
+      margin-bottom:.5rem; 
+    }
+    
+    :root[data-theme="github-light"] .task {
+      background: #ffffff;
+      border-color: #d0d7de;
+    }
+
     .task.dragging{ opacity:.55; transform:scale(0.98); }
     .task.done .text{ text-decoration:line-through; color:var(--comment); }
     .task .text[contenteditable="true"]{ outline:2px solid var(--purple); border-radius:.25rem; padding:.1rem .2rem; }
     .task .badge{ background:transparent; border:1px solid var(--comment); color:var(--comment); }
-    .task .text { flex: 1; word-break: break-word; line-height: 1.4; }
-    .task-actions { display: flex; gap: .25rem; align-items: center; flex-shrink: 0; }
+    .task .text { flex: 1; word-break: break-word; line-height: 1.4; min-width: 0; color: var(--fg); }
+    .task-left { display: flex; gap: .5rem; align-items: center; flex: 1; min-width: 0; }
+    .task-right { display: flex; gap: .25rem; align-items: center; flex-shrink: 0; }
     .list-drop{ min-height:2.2rem; gap:.5rem; display:flex; flex-direction:column; }
     .list-drop.hover{ outline:2px dashed var(--purple); border-radius:.6rem; padding:.4rem; }
     .muted{ color:var(--comment); }
     .divider{ border-top:1px dashed var(--current); }
-    .searchbox{ background:#232532; border:1px solid var(--current); color:var(--fg); }
+    .searchbox{ background:color-mix(in srgb, var(--current) 20%, var(--card-bg) 80%); border:1px solid var(--current); color:var(--fg); }
     .searchbox::placeholder{ color:var(--comment); }
-    .switch-mini .form-check-input{ width:2.2rem; height:1.2rem; background:#1e2030; border:1px solid var(--current); }
-    .kbd{ background:#1e2030; border:1px solid var(--current); border-bottom-width:3px; padding:.1rem .35rem; border-radius:.2rem; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:0.8rem; }
+    
+    :root[data-theme="github-light"] .searchbox {
+      background: #ffffff;
+      border-color: #d0d7de;
+    }
+
+    .switch-mini .form-check-input{ 
+      width:2.2rem; 
+      height:1.2rem; 
+      background:color-mix(in srgb, var(--bg) 80%, var(--current) 20%); 
+      border:1px solid var(--current); 
+    }
+    
+    :root[data-theme="github-light"] .switch-mini .form-check-input {
+      background: #f6f8fa;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--green);
+      border-color: var(--green);
+    }
+
+    .kbd{ 
+      background:color-mix(in srgb, var(--bg) 80%, var(--current) 20%); 
+      border:1px solid var(--current); 
+      border-bottom-width:3px; 
+      padding:.1rem .35rem; 
+      border-radius:.2rem; 
+      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; 
+      font-size:0.8rem;
+      color:var(--fg);
+    }
+    
+    :root[data-theme="github-light"] .kbd {
+      background: #f6f8fa;
+      border-color: #d0d7de;
+      color: var(--fg);
+    }
+
     .link-muted{ color:var(--comment); text-decoration:none; }
     .link-muted:hover{ color:var(--fg); }
+    
     /* Session mode */
     body.session .backlog-pane,
     body.session .organize-toolbar,
@@ -64,24 +173,93 @@
     body.session .info-quickstart{ display:none !important; }
     body.session .today-pane{ width:100% !important; }
     body.session .navbar{ border-bottom:2px solid var(--green); }
+    
     /* Priority colors */
     .pri-0{ color:var(--comment); }
     .pri-1{ color:var(--yellow); }
     .pri-2{ color:var(--pink); }
+    
     /* Tag chip */
     .chip{ border:1px solid var(--comment); color:var(--comment); border-radius:999px; padding:0 .4rem; font-size:.75rem; }
+    
     /* File input hidden; styled label */
     #fileInput{ display:none; }
     .file-label{ cursor:pointer; }
-    /* Footer (Dracula-themed, sticky bottom) */
+    
+    /* Footer (themed, sticky bottom) */
     .footer { 
-          background:#20222c; 
-          color:var(--fg); 
-          border-top:1px solid var(--current);
-        }
-        .footer a { color: var(--cyan); text-decoration: none; }
-        .footer a:hover { text-decoration: underline; }
-        .footer .label { color: var(--comment); text-transform: uppercase; letter-spacing:.05em; }
+      background:color-mix(in srgb, var(--bg) 95%, var(--current) 5%); 
+      color:var(--fg); 
+      border-top:1px solid var(--current);
+    }
+    .footer a { color: var(--cyan); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    .footer .label { color: var(--comment); text-transform: uppercase; letter-spacing:.05em; }
+
+    /* Theme Selector */
+    .theme-selector {
+      position: relative;
+    }
+    .theme-option {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem .75rem;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--fg);
+      width: 100%;
+      text-align: left;
+    }
+    .theme-option:hover {
+      background: var(--current);
+    }
+    .theme-option.active {
+      background: var(--purple);
+      color: var(--bg);
+    }
+
+    /* Dropdown theme support */
+    .dropdown-menu {
+      background: var(--card-bg);
+      border: 1px solid var(--current);
+    }
+
+    /* Organize toolbar fix - ensure row layout */
+    .organize-toolbar {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: nowrap;
+    }
+    
+    .organize-toolbar #search {
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .organize-toolbar .form-check {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* Text color fixes for light theme */
+    :root[data-theme="github-light"] {
+      --bs-body-color: #1f2328;
+    }
+    
+    :root[data-theme="github-light"] .text-light {
+      color: #1f2328 !important;
+    }
+    
+    :root[data-theme="github-light"] .form-text {
+      color: #656d76 !important;
+    }
+
+    :root[data-theme="github-light"] .small {
+      color: #1f2328;
+    }
 
     /* Mobile responsiveness */
     @media (max-width: 768px) {
@@ -92,9 +270,24 @@
       .btn-sm { font-size: 0.8rem; padding: .25rem .5rem; }
       
       .card-header .d-flex { flex-wrap: wrap; gap: .5rem; }
-      .organize-toolbar { width: 100%; }
-      .organize-toolbar .d-flex { flex-wrap: wrap; gap: .5rem; width: 100%; }
-      #search { flex: 1; min-width: 0; }
+      
+      /* Mobile organize toolbar - stack vertically */
+      .organize-toolbar {
+        width: 100%;
+        flex-direction: column;
+        gap: .5rem;
+        align-items: stretch;
+      }
+      
+      .organize-toolbar #search {
+        width: 100%;
+        order: 1;
+      }
+      
+      .organize-toolbar .form-check {
+        order: 2;
+        align-self: flex-start;
+      }
       
       .task { 
         padding: .5rem; 
@@ -102,13 +295,10 @@
         align-items: stretch; 
         gap: .75rem;
       }
-      .task-content {
-        display: flex;
-        gap: .5rem;
-        align-items: flex-start;
+      .task-left {
         width: 100%;
       }
-      .task-actions {
+      .task-right {
         justify-content: flex-end;
         width: 100%;
         border-top: 1px solid var(--current);
@@ -215,11 +405,32 @@
       <span class="brand-badge">CSB</span>
       <strong class="d-none d-sm-inline">Code Sprint Board</strong>
       <strong class="d-sm-none">Sprint Board</strong>
-      <span class="ms-2 pill small d-none d-md-inline"><i class="bi bi-moon-stars me-1"></i>Dracula</span>
+      
+      <!-- Theme Selector -->
+      <div class="dropdown theme-selector d-none d-md-block ms-2">
+        <button class="pill dropdown-toggle border-0 bg-transparent" data-bs-toggle="dropdown">
+          <span id="currentThemeIcon">🧛</span>
+          <span id="currentThemeName">Dracula</span>
+        </button>
+        <div class="dropdown-menu">
+          <button class="theme-option" data-theme="dracula">
+            <span>🧛</span>
+            <span>Dracula</span>
+          </button>
+          <button class="theme-option" data-theme="rose-pine">
+            <span>🌹</span>
+            <span>Rose Pine</span>
+          </button>
+          <button class="theme-option" data-theme="github-light">
+            <span>☀️</span>
+            <span>GitHub Light</span>
+          </button>
+        </div>
+      </div>
     </div>
     <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
       <span id="todayCount" class="badge rounded-pill" style="background:var(--purple);">0</span>
-      <span id="backlogCount" class="badge rounded-pill" style="background:var(--orange); color:#0b0e12;">0</span>
+      <span id="backlogCount" class="badge rounded-pill" style="background:var(--orange); color:var(--bg);">0</span>
 
       <div class="vr mx-2 d-none d-md-block"></div>
 
@@ -246,7 +457,7 @@
               <label for="fileInput" class="btn btn-ghost btn-sm file-label"><i class="bi bi-upload me-1"></i>Upload</label>
               <input type="file" id="fileInput" accept=".txt,text/plain" />
             </div>
-            <div class="form-text text-light mt-2">
+            <div class="form-text mt-2">
               Tip: Import will replace current data. You can also drop the .txt file anywhere in the page.
             </div>
           </div>
@@ -303,12 +514,10 @@
               <strong>Backlog</strong>
             </div>
             <div class="organize-toolbar">
-              <div class="d-flex align-items-center gap-2 flex-wrap">
-                <input id="search" class="form-control form-control-sm searchbox" placeholder="Filter..." />
-                <div class="form-check form-switch switch-mini">
-                  <input class="form-check-input" type="checkbox" id="toggleDoneBacklog">
-                  <label for="toggleDoneBacklog" class="form-check-label small">Hide done</label>
-                </div>
+              <input id="search" class="form-control form-control-sm searchbox" placeholder="Filter..." />
+              <div class="form-check form-switch switch-mini">
+                <input class="form-check-input" type="checkbox" id="toggleDoneBacklog">
+                <label for="toggleDoneBacklog" class="form-check-label small">Hide done</label>
               </div>
             </div>
           </div>
@@ -319,7 +528,7 @@
                 <input id="taskInput" class="form-control searchbox" placeholder="Add task... #tags !!" autocomplete="off">
                 <button class="btn btn-drac" type="submit">Add</button>
               </div>
-              <div class="form-text text-light d-none d-md-block">Examples: "Refactor auth #backend !!" • "Fix CSS glitches #ui"</div>
+              <div class="form-text muted d-none d-md-block">Examples: "Refactor auth #backend !!" • "Fix CSS glitches #ui"</div>
             </form>
 
             <div id="backlogList" class="list-drop" aria-label="Backlog list"></div>
@@ -356,91 +565,94 @@
   <!-- Templates -->
   <template id="taskTemplate">
     <div class="task" draggable="true">
-      <div class="task-content">
+      <div class="task-left">
         <input type="checkbox" class="form-check-input chk">
-        <span class="text flex-grow-1" role="textbox"></span>
-        <i class="bi bi-flag-fill pri pri-0" title="Priority"></i>
+        <i class="bi bi-circle pri pri-0"></i>
+        <span class="text">Task text</span>
       </div>
-      <div class="task-actions">
-        <span class="small tags d-none"></span>
-        <button class="btn btn-sm btn-ghost btn-today" title="Toggle Today">
-          <i class="bi bi-rocket-takeoff"></i>
-        </button>
-        <button class="btn btn-sm btn-ghost btn-edit d-none d-md-inline-flex" title="Edit">
-          <i class="bi bi-pencil"></i>
-        </button>
-        <button class="btn btn-sm btn-ghost btn-del" title="Delete">
-          <i class="bi bi-trash"></i>
-        </button>
+      <div class="task-right">
+        <div class="tags d-none"></div>
+        <button type="button" class="btn btn-ghost btn-sm btn-edit d-none d-lg-inline-block" title="Edit"><i class="bi bi-pencil"></i></button>
+        <button type="button" class="btn btn-ghost btn-sm btn-today" title="Today"><i class="bi bi-rocket-takeoff"></i></button>
+        <button type="button" class="btn btn-ghost btn-sm btn-del" title="Delete"><i class="bi bi-trash3"></i></button>
       </div>
     </div>
   </template>
 
-  <!-- Session footer hint -->
-  <footer class="text-center py-3 small muted">
-    <a class="link-muted" href="#" id="showShortcuts"><i class="bi bi-keyboard"></i> Shortcuts</a>
-    <span class="mx-2">•</span>
-    <span id="clock"></span>
+  <!-- Footer -->
+  <footer class="footer mt-auto">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center py-3 px-3 flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          <span class="small">
+            <span class="label">Clock:</span>
+            <span id="clock" class="ms-1"></span>
+          </span>
+          <span class="small muted">
+            Auto-saved • <a href="#" id="showShortcuts" class="link-muted">Keyboard shortcuts</a>
+          </span>
+        </div>
+        <div class="small muted">
+          Made for focused work sessions
+        </div>
+      </div>
+    </div>
   </footer>
 
-<footer class="footer mt-auto py-3">
-  <div class="container small d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-    <div>
-      <span class="label me-2">Imprint:</span>
-      <span>Lars Feldeisen</span>
-    </div>
-
-    <div>
-      <i class="bi bi-github me-1"></i>
-      <a href="https://github.com/x0ptr" target="_blank" rel="noopener">github.com/x0ptr</a>
-    </div>
-
-    <div class="text-muted d-none d-md-block">
-      Share or Save with <kbd>Ctrl</kbd>+<kbd>S</kbd>
-    </div>
-  </div>
-</footer>
-
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
-    // ---------- Utilities ----------
-    const $ = (sel, el=document)=>el.querySelector(sel);
-    const $$ = (sel, el=document)=>Array.from(el.querySelectorAll(sel));
+    // ---------- State ----------
+    let state = { tasks: [], orderBacklog: [], orderToday: [], session: false };
+    let ui = { filter: '', hideDoneBacklog: false, hideDoneToday: false, theme: 'dracula' };
+
+    // ---------- Helpers ----------
+    const $ = (sel, ctx=document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx=document) => [...ctx.querySelectorAll(sel)];
+    const nowStamp = () => new Date().toISOString();
+    const toBase64 = str => btoa(unescape(encodeURIComponent(str)));
+    const fromBase64 = b64 => decodeURIComponent(escape(atob(b64)));
+
+    // Theme system
+    function setTheme(themeName) {
+      document.documentElement.setAttribute('data-theme', themeName);
+      ui.theme = themeName;
+      
+      // Update theme selector display
+      const themes = {
+        'dracula': { name: 'Dracula', icon: '🧛' },
+        'rose-pine': { name: 'Rose Pine', icon: '🌹' },
+        'github-light': { name: 'GitHub Light', icon: '☀️' }
+      };
+      
+      const theme = themes[themeName] || themes['dracula'];
+      $('#currentThemeName').textContent = theme.name;
+      $('#currentThemeIcon').textContent = theme.icon;
+      
+      // Update active state in dropdown
+      $$('.theme-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.theme === themeName);
+      });
+      
+      saveUI();
+    }
+
+    // Add theme selector event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      $$('.theme-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          setTheme(btn.dataset.theme);
+        });
+      });
+    });
+
+    // ---------- Storage ----------
     const STORAGE_KEY = 'csb_data_v1';
     const UI_KEY = 'csb_ui_v1';
-
-    const nowStamp = ()=> new Date().toISOString();
-
-    // Robust Base64 for UTF-8
-    function toBase64(str){
-      const bytes = new TextEncoder().encode(str);
-      let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
-      return btoa(bin);
-    }
-    function fromBase64(b64){
-      const bin = atob(b64);
-      const bytes = new Uint8Array([...bin].map(c=>c.charCodeAt(0)));
-      return new TextDecoder().decode(bytes);
-    }
-
-    // ---------- State ----------
-    let state = {
-      tasks: [], // {id, text, tags[], pri:0-2, today:bool, done:bool, created, updated}
-      orderBacklog: [],
-      orderToday: [],
-      session: false
-    };
-    let ui = {
-      hideDoneBacklog:false,
-      hideDoneToday:false,
-      filter:''
-    };
-
-    // ---------- Persistence ----------
-    function save(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      localStorage.setItem(UI_KEY, JSON.stringify(ui));
-    }
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function saveUI(){ localStorage.setItem(UI_KEY, JSON.stringify(ui)); }
     function load(){
       try{
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -453,26 +665,36 @@
     // ---------- ID ----------
     function nextId(){ return 't'+Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4); }
 
-    // ---------- Parsing ----------
+    // ---------- Parsing ---------- 
     function parseTaskInput(text){
       const pri = (text.match(/!{2,}/)? Math.min(2, text.match(/!+/)[0].length-1) : 0);
       text = text.replace(/!+/g,'').trim();
       const tags = (text.match(/#([\p{L}\p{N}_-]+)/gu)||[]).map(t=>t.slice(1).toLowerCase());
-      // Keep tags in text for inline display; no removal.
       return {text, tags:[...new Set(tags)], pri};
     }
 
     // ---------- Rendering ----------
     function render(){
-      // Filter
-      const filter = ui.filter.trim().toLowerCase();
+      // Clear search filter when rendering to prevent hiding newly added tasks
+      const currentFilter = ui.filter;
+      
+      // Filter - FIXED: Improved filter logic to handle tags properly
+      const filter = currentFilter.trim().toLowerCase();
       const testFilter = (task)=>{
         if(!filter) return true;
+        
+        // If filter starts with #, search in tags
         if(filter.startsWith('#')){
           const ft = filter.slice(1);
-          return task.tags.some(t=>t.includes(ft));
+          return task.tags.some(t=>t.toLowerCase().includes(ft));
         }
-        return task.text.toLowerCase().includes(filter) || task.tags.some(t=>('#'+t).includes(filter));
+        
+        // Otherwise search in text content and tags
+        const textMatch = task.text.toLowerCase().includes(filter);
+        const tagMatch = task.tags.some(t=>t.toLowerCase().includes(filter));
+        const hashTagMatch = task.tags.some(t=>('#'+t.toLowerCase()).includes(filter));
+        
+        return textMatch || tagMatch || hashTagMatch;
       };
 
       // Partition
@@ -587,19 +809,22 @@
         }
       });
 
-      // tags (inline chips when hovering)
+      // FIXED: tags (inline chips when hovering)
       if(task.tags?.length){
-        const span = document.createElement('span');
-        span.className = 'd-flex align-items-center gap-1 flex-wrap';
-        task.tags.forEach(t=>{
-          const chip = document.createElement('span'); 
-          chip.className='badge rounded-pill';
-          chip.textContent = '#'+t;
-          chip.style.fontSize = '0.7rem';
-          span.appendChild(chip);
-        });
-        $('.tags', root).replaceWith(span);
-        $('.tags', root).classList.remove('d-none');
+        const tagsContainer = $('.tags', root);
+        if(tagsContainer) {
+          const span = document.createElement('span');
+          span.className = 'd-flex align-items-center gap-1 flex-wrap';
+          task.tags.forEach(t=>{
+            const chip = document.createElement('span'); 
+            chip.className='badge rounded-pill';
+            chip.textContent = '#'+t;
+            chip.style.fontSize = '0.7rem';
+            span.appendChild(chip);
+          });
+          tagsContainer.replaceWith(span);
+          span.classList.remove('d-none');
+        }
       }
 
       // drag
@@ -715,12 +940,25 @@
       const input = $('#taskInput');
       const raw = input.value.trim();
       if(!raw) return;
+      
+      // FIXED: Clear any active filter temporarily to ensure new task shows up
+      const originalFilter = ui.filter;
+      ui.filter = '';
+      
       const {text, tags, pri} = parseTaskInput(raw);
       const t = { id: nextId(), text, tags, pri, today:false, done:false, created:nowStamp(), updated:nowStamp() };
       state.tasks.push(t);
       state.orderBacklog.push(t.id);
       input.value='';
+      
+      // Render without filter
       render();
+      
+      // Restore filter after a brief delay to show the new task
+      setTimeout(() => {
+        ui.filter = originalFilter;
+        render();
+      }, 100);
     });
 
     // Filter + hide done toggles
@@ -839,6 +1077,10 @@
 
     // ---------- Boot ----------
     load();
+    
+    // Apply saved theme
+    setTheme(ui.theme);
+    
     setupDrops();
     render();
 
@@ -855,3 +1097,4 @@
 
 </body>
 </html>
+
